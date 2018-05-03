@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>*月*</title>
+	 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="stylesheet" href="animate.css">
+	<script src="jquery-1.7.2.js"></script>
+	<style>
+		html{
+			overflow: hidden;
+			font-size: 20px;
+			height: 100%;
+			width: 100%;
+		}
+		body{
+			position: relative;
+			height: 100%;
+			background-color: rgba(255,0,0,0.4);
+			background-size: cover;
+		}
+		#wrapper{
+			width: 14rem;
+			height: 14rem;
+			
+			position: absolute;
+			left: 50%;
+			margin-left:-7rem;
+			top:70%;
+			margin-top: -7rem;
+		}
+		#photo{
+			width: 100%;
+			height: 100%;
+			border-radius: 50%;
+			background-image:url(img/1.jpg);
+			background-repeat: no-repeat;
+			background-position: center center;
+			background-size: cover;
+			-webkit-animation-duration: 10s;
+			animation-duration: 10s;
+			/*animation-delay: 2s;*/
+			animation-timing-function:ease-in-out ;
+			animation-direction:normal;
+			animation-fill-mode: forwards;
+		}
+		audio{
+			visibility: hidden;
+		}
+		#back{
+			height: 100%;
+			opacity: 0.6;
+			background-image: url(img/body1.jpg);
+			background-size: cover;
+			background-position: center center;
+		}
+		p{
+			width: 20px;
+			height: 20px;
+			font:20px/20px english;
+			text-align: center;
+			/*background:lime;*/
+			position: absolute;
+			left: 0;
+			top:0;
+		}
+		canvas{
+			position: absolute;
+			left:-25%;
+			top:0;
+			z-index: 999;
+		}
+	</style>
+	<script>
+	$(function(){
+			;(function(win, doc){
+	        function change(){
+	            doc.documentElement.style.fontSize=20*doc.documentElement.clientWidth/320+'px';
+	        }
+	        change();
+
+	            win.addEventListener('resize', change, false);
+	        })(window, document);
+
+			var arr=['flash','rubberBand','shake','tada','wobble','jello','bounceIn','bounceInDown','bounceInLeft','bounceInRight','bounceInUp','fadeInDown','flip','flipInX','flipInY','lightSpeedIn','rotateIn','rotateInDownLeft','rotateInDownRight','rollIn','zoomInDown','zoomInLeft','zoomInRight','zoomInUp'];
+			var fadeout=['bounceOut','bounceOutDown','bounceOutLeft','bounceOutRight','bounceOutUp','fadeOut','fadeOutDown','fadeOutDownBig','fadeOutLeft','fadeOutLeftBig','fadeOutRight','fadeOutRightBig','fadeOutUp','fadeOutUpBig','flipOutX','flipOutY','lightSpeedOut','rotateOut','rotateOutDownLeft','rotateOutDownRight','rotateOutUpLeft','rotateOutUpRight','rollOut','zoomOut','zoomOutDown','zoomOutLeft','zoomOutRight','zoomOutUp']
+			arr.sort(function(){
+                    return Math.random()-0.5;  
+                });
+			fadeout.sort(function(){
+                    return Math.random()-0.5;  
+                });
+			var i=0;
+			var j=0;
+			var n=arr.length;
+			var f=fadeout.length;
+			var w=$('body').outerWidth();
+			var h=$('body').outerHeight();
+
+			function play(){
+
+				$('#photo').addClass('animated '+arr[i%n]);
+
+				$('#photo').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',function(){
+					$('#photo').removeClass().addClass('animated '+fadeout[i%f]);
+					$('#photo').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',function(){
+						
+						$('#photo').removeClass();
+						i++;
+						$('#photo').css({'backgroundImage':'url(img/'+i%74+'.jpg)','backgroundSize':'cover'});
+						play();
+					});
+
+					
+				});
+			};
+			play();
+		
+			function fade(){
+				$('#back').fadeOut(10000,function(){
+					j++;
+					$('#back').css({'backgroundImage': 'url(img/body'+(j%20+1)+'.jpg) ','backgroundSize':'cover'}).fadeIn(10000);
+
+					fade();
+				})
+			};
+			fade();
+			function rnd(m,n){
+				return Math.floor(Math.random()*(n-m)+m);
+			}
+			function downstar(){
+				var op=$('<p></p>').text('★').css({
+					fontSize:rnd(10,30)+'px',
+					'color':'rgb('+rnd(0,256)+','+rnd(0,256)+','+rnd(0,256)+')',
+					left:rnd(2,w)+'px',
+					top:rnd(-500,-10)+'px'
+				});
+				$('body').append(op);
+				op.animate({top:rnd(h/3,1.2*h),opacity:0},10000+rnd(1000,5000),function(){
+					$(this).remove();
+					downstar();
+				})
+
+			}
+			for (var i = 0; i < 50; i++) {
+				downstar();
+			}
+			function upstar(){
+				var op=$('<p></p>').text('月').css({
+					'color':'rgb('+rnd(0,256)+','+rnd(0,256)+','+rnd(0,256)+')',
+					left:rnd(2,w)+'px',
+					top:rnd(1.2*h,2*h)+'px'
+				});
+				$('body').append(op);
+				op.animate({top:rnd(0,-h),left:rnd(-w,2*w),opacity:0},1000+rnd(10000,50000),function(){
+					$(this).remove();
+					setTimeout(upstar(),10000);
+				})
+			}
+			upstar();
+			
+
+	})
+		
+	</script>
+	
+</head>
+<body>
+	<div id="back"></div>
+	<div id="wrapper">
+		<div id="photo"></div>
+	</div>
+	<audio controls autoplay loop>
+		  
+		  
+		  <source src="yinghuochong.mp3" type="audio/mpeg">
+		 您的浏览器不支持 audio 元素。
+	</audio>
+	<canvas id="c"  z-index='999'></canvas>
+</body>
+	<script>    
+   		var b = document.body;
+    	var c = document.getElementsByTagName('canvas')[0];
+    	var a = c.getContext('2d');
+	</script>
+	<script>
+	eval('var M=Math,n=M.pow,i,E=2,F="rgba(233,61,109,",d=M.cos,z=M.sin,L=1,u=30,W=window,w=c.width=1.5*(W.innerWidth),h=c.height=0.4*(W.innerHeight),r=_1){return M.random()*2-1},y="px Arial",v="月",q="+♥",X=w/2,Y=h/2,T=4,p=_1){var e=this;e.g=_1){e.x=X;e.y=Y;e.k=0;e.l=0;e.t=M.random()*19000;e.c=e.t};e.d=_1){a.fillStyle=F+(e.c/e.t)+")";a.fillText(q,e.x,e.y);e.c-=50;e.x+=e.k;e.y+=e.l;e.k=e.k+r();e.l=e.l+r();if(e.c<0||e.x>w||e.x<0||e.y>h||e.y<0){e.g()}};e.g()},A,B;a.textAlign="center";a.strokeStyle="#000";a.lineWidth=2;for(i=0;i<350;i++){M[i]=new p()}setInterval(_1){a.clearRect(0,0,w,h);a.font=u+y;X=(w/6*n(z(T),3)+w/2);Y=0.8*(-h/40*(13*d(T)-5*d(2*T)-2*d(3*T)-d(4*T))+h/2.3);T+=(z(T)+3)/99;for(i=0;i<350;i++){with(M[i]){A=(x/w-0.5)*2,B=-(y/h-0.5);if(L&&(A*A+2*n((B-0.5*n(M.abs(A),0.5)),2))>0.11){k=l=0}d()}}a.font=120+y;if(E>0.1){if(E<1){a.fillStyle=F+E+")";a.fillText("Click",w/2,h/2)}E-=0.02}a.fillStyle="#E93D6D";a.fillText(v,X,Y+u);a.strokeText(v,X,Y+u)},50);b.bgColor="#FFEFF2";c.onmouseup=_1){L=(L)?0:1}'.replace(/(_1)/g,'function('))
+    </script>
+</html>
